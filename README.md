@@ -1,8 +1,8 @@
 ### How to get the source code
 ```
-mkdir cs540 (any name you like)
-cd cs540
-git clone git@github.com:njurn/cs540.git .
+$ mkdir cs540 (any name you like)
+$ cd cs540
+$ git clone git@github.com:njurn/cs540.git .
 ```
 
 ### Requirements
