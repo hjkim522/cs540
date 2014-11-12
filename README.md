@@ -1,3 +1,10 @@
+### How to get source code
+```
+mkdir cs540 (any name you like)
+cd cs540
+git clone git@github.com:njurn/cs540.git .
+```
+
 ### Requirements
 자세한 사항은 http://ndnsim.net/getting-started.html 참고 
 ```
