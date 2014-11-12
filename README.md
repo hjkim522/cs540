@@ -1,4 +1,4 @@
-### How to get source code
+### How to get the source code
 ```
 mkdir cs540 (any name you like)
 cd cs540
