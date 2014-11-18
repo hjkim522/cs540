@@ -29,7 +29,8 @@ main (int argc, char *argv[])
   // Install NDN stack on all nodes
   ndn::StackHelper ndnHelper;
   ndnHelper.SetDefaultRoutes (true);
-  ndnHelper.SetContentStore("ns3::ndn::cs::Lru", "MaxSize", "10000");
+  //ndnHelper.SetContentStore("ns3::ndn::cs::Lru", "MaxSize", "10000");
+  ndnHelper.SetContentStore("ns3::ndn::cs::Topology", "MaxSize", "10000");
   ndnHelper.InstallAll ();
 
   // Installing applications

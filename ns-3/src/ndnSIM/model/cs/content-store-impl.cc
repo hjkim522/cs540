@@ -26,6 +26,7 @@
 #include "../../utils/trie/lfu-policy.h"
 #include "../../utils/trie/multi-policy.h"
 #include "../../utils/trie/aggregate-stats-policy.h"
+#include "./custom-policies/topology-policy.h"
 
 #define NS_OBJECT_ENSURE_REGISTERED_TEMPL(type, templ)  \
   static struct X ## type ## templ ## RegistrationClass \
@@ -64,10 +65,14 @@ template class ContentStoreImpl<fifo_policy_traits>;
  **/
 template class ContentStoreImpl<lfu_policy_traits>;
 
+// Topology cache
+template class ContentStoreImpl<topology_policy_traits>;
+
 NS_OBJECT_ENSURE_REGISTERED_TEMPL(ContentStoreImpl, lru_policy_traits);
 NS_OBJECT_ENSURE_REGISTERED_TEMPL(ContentStoreImpl, random_policy_traits);
 NS_OBJECT_ENSURE_REGISTERED_TEMPL(ContentStoreImpl, fifo_policy_traits);
 NS_OBJECT_ENSURE_REGISTERED_TEMPL(ContentStoreImpl, lfu_policy_traits);
+NS_OBJECT_ENSURE_REGISTERED_TEMPL(ContentStoreImpl, topology_policy_traits);
 
 
 typedef multi_policy_traits< boost::mpl::vector2< lru_policy_traits,
@@ -111,6 +116,8 @@ class Random : public ContentStoreImpl<random_policy_traits> { };
  * \brief Content Store implementing Least Frequently Used cache replacement policy
  */
 class Lfu : public ContentStoreImpl<lfu_policy_traits> { };
+
+class Topology : public ContentStoreImpl<topology_policy_traits> { };
 #endif
 
 
