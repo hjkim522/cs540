@@ -21,28 +21,25 @@ class Entry
 {
 public:
   int m_sourceId;
-  int m_faceId;
+  //int m_faceId;
   int m_bc;
 };
 
 class Spt
 {
 public:
-  // constructor
+  /* Constructor */
   Spt ();
-
-  // destructor
   virtual ~Spt ();
 
-  // self node (router) id
+  /* Self node (router) id */
   int m_nodeId;
 
-  // entries
+  /* entries */
   Entry m_entries[];
-
-  // total bc
-  int m_bc;
 };
+
+Spt *getSpt(int nodeId);
 
 } // namespace spt
 } // namespace ndn

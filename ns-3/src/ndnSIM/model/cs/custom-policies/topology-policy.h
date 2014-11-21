@@ -8,9 +8,14 @@
 
 #include <boost/intrusive/options.hpp>
 #include <boost/intrusive/set.hpp>
+#include <stdio.h>
+#include "../../ndn-spt.h"
 
 namespace ns3 {
 namespace ndn {
+
+spt::Spt *getSpt(int nodeId);
+
 namespace ndnSIM {
 
 /**
@@ -90,17 +95,28 @@ struct topology_policy_traits
         if (max_size_ != 0 && policy_container::size () >= max_size_)
           {
             // this erases the "least frequently used item" from cache
-            // -> use frequency as weight
             base_.erase (&(*policy_container::begin ()));
           }
 
         policy_container::insert (*item);
+        NS_LOG_UNCOND("insert\n");
+        // update with spt
+        spt::Spt *table = spt::getSpt(0);
+        printf("spt %d\n", table->m_nodeId);
+        printf("item %d\n", item);
+        (*item).key ();
+
+        //Name key = (*item).key ();
+        name::Component key = (*item).key ();
+        printf("key %s\n", key.toUri().c_str());
+
         return true;
       }
 
       inline void
       lookup (typename parent_trie::iterator item)
       {
+        NS_LOG_UNCOND("lookup\n");
         policy_container::erase (policy_container::s_iterator_to (*item));
         get_order (item) += 1;
         policy_container::insert (*item);
