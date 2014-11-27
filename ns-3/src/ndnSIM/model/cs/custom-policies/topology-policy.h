@@ -8,14 +8,12 @@
 
 #include <boost/intrusive/options.hpp>
 #include <boost/intrusive/set.hpp>
-#include <stdio.h>
 #include "../../ndn-spt.h"
 
 namespace ns3 {
 namespace ndn {
 
 double getWeight(int nodeId, name::Component key);
-spt::Spt *getSpt(int nodeId);
 
 namespace ndnSIM {
 
@@ -84,14 +82,16 @@ struct topology_policy_traits
       update (typename parent_trie::iterator item)
       {
         policy_container::erase (policy_container::s_iterator_to (*item));
-        get_order (item) += 1;
+        //get_order (item) += 1;
         policy_container::insert (*item);
       }
 
       inline bool
       insert (typename parent_trie::iterator item)
       {
-        get_order (item) = 0;
+        //get_order (item) = 0;
+        //TODO: get nodeId
+        get_order (item) = getWeight(0, (*item).key ());
 
         if (max_size_ != 0 && policy_container::size () >= max_size_)
           {
@@ -101,31 +101,14 @@ struct topology_policy_traits
 
         policy_container::insert (*item);
 
-        //TODO: get nodeId
-        get_order (item) = getWeight(0, (*item).key ());
-
-        /*
-        NS_LOG_UNCOND("insert\n");
-        // update with spt
-        spt::Spt *table = spt::getSpt(0);
-        printf("spt %d\n", table->m_nodeId);
-        printf("item %d\n", item);
-        (*item).key ();
-
-        //Name key = (*item).key ();
-        name::Component key = (*item).key ();
-        printf("key %s\n", key.toUri().c_str());
-        */
-
         return true;
       }
 
       inline void
       lookup (typename parent_trie::iterator item)
       {
-        NS_LOG_UNCOND("lookup\n");
         policy_container::erase (policy_container::s_iterator_to (*item));
-        get_order (item) += 1;
+        //get_order (item) += 1;
         policy_container::insert (*item);
       }
 
