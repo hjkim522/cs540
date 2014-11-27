@@ -14,6 +14,7 @@
 namespace ns3 {
 namespace ndn {
 
+double getWeight(int nodeId, name::Component key);
 spt::Spt *getSpt(int nodeId);
 
 namespace ndnSIM {
@@ -99,6 +100,11 @@ struct topology_policy_traits
           }
 
         policy_container::insert (*item);
+
+        //TODO: get nodeId
+        get_order (item) = getWeight(0, (*item).key ());
+
+        /*
         NS_LOG_UNCOND("insert\n");
         // update with spt
         spt::Spt *table = spt::getSpt(0);
@@ -109,6 +115,7 @@ struct topology_policy_traits
         //Name key = (*item).key ();
         name::Component key = (*item).key ();
         printf("key %s\n", key.toUri().c_str());
+        */
 
         return true;
       }
