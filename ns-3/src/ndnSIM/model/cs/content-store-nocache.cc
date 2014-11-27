@@ -63,7 +63,7 @@ Nocache::Lookup (Ptr<const Interest> interest)
 }
 
 bool
-Nocache::Add (Ptr<const Data> data)
+Nocache::Add (Ptr<const Data> data, int nodeId)
 {
   return false;
 }

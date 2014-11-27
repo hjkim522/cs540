@@ -5502,7 +5502,7 @@ def register_Ns3NdnContentStore_methods(root_module, cls):
     ## ndn-content-store.h (module 'ndnSIM'): bool ns3::ndn::ContentStore::Add(ns3::Ptr<ns3::ndn::Data const> data) [member function]
     cls.add_method('Add', 
                    'bool', 
-                   [param('ns3::Ptr< ns3::ndn::Data const >', 'data')], 
+                   [param('ns3::Ptr< ns3::ndn::Data const >', 'data'), param('int', 'nodeId')], 
                    is_pure_virtual=True, is_virtual=True)
     ## ndn-content-store.h (module 'ndnSIM'): ns3::Ptr<ns3::ndn::cs::Entry> ns3::ndn::ContentStore::Begin() [member function]
     cls.add_method('Begin', 

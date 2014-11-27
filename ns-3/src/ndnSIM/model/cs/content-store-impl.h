@@ -98,7 +98,7 @@ public:
   Lookup (Ptr<const Interest> interest);
 
   virtual inline bool
-  Add (Ptr<const Data> data);
+  Add (Ptr<const Data> data, int nodeId);
 
   // virtual bool
   // Remove (Ptr<Interest> header);
@@ -221,7 +221,7 @@ ContentStoreImpl<Policy>::Lookup (Ptr<const Interest> interest)
 
 template<class Policy>
 bool
-ContentStoreImpl<Policy>::Add (Ptr<const Data> data)
+ContentStoreImpl<Policy>::Add (Ptr<const Data> data, int nodeId)
 {
   NS_LOG_FUNCTION (this << data->GetName ());
 

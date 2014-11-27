@@ -58,7 +58,7 @@ public:
   Lookup (Ptr<const Interest> interest);
 
   virtual bool
-  Add (Ptr<const Data> data);
+  Add (Ptr<const Data> data, int nodeId);
 
   virtual void
   Print (std::ostream &os) const;

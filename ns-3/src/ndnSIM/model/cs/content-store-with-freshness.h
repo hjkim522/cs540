@@ -50,7 +50,7 @@ public:
   Print (std::ostream &os) const;
 
   virtual inline bool
-  Add (Ptr<const Data> data);
+  Add (Ptr<const Data> data, int nodeId);
 
 private:
   inline void
@@ -94,9 +94,9 @@ ContentStoreWithFreshness< Policy >::GetTypeId ()
 
 template<class Policy>
 inline bool
-ContentStoreWithFreshness< Policy >::Add (Ptr<const Data> data)
+ContentStoreWithFreshness< Policy >::Add (Ptr<const Data> data, int nodeId)
 {
-  bool ok = super::Add (data);
+  bool ok = super::Add (data, nodeId);
   if (!ok) return false;
 
   NS_LOG_DEBUG (data->GetName () << " added to cache");

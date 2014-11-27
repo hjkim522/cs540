@@ -140,7 +140,7 @@ public:
    * @returns true if an existing entry was updated, false otherwise
    */
   virtual bool
-  Add (Ptr<const Data> data) = 0;
+  Add (Ptr<const Data> data, int nodeId) = 0;
 
   // /*
   //  * \brief Add a new content to the content store.
