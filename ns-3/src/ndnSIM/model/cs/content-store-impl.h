@@ -233,6 +233,7 @@ ContentStoreImpl<Policy>::Add (Ptr<const Data> data, int nodeId)
       if (result.second)
         {
           newEntry->SetTrie (result.first);
+          newEntry->m_nodeId = nodeId;
 
           m_didAddEntry (newEntry);
           return true;

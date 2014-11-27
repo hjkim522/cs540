@@ -88,6 +88,9 @@ public:
   Ptr<ContentStore>
   GetContentStore ();
 
+public:
+  int m_nodeId;
+
 private:
   Ptr<ContentStore> m_cs; ///< \brief content store to which entry is added
   Ptr<const Data> m_data; ///< \brief non-modifiable Data
