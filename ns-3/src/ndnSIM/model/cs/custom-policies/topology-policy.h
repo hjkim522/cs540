@@ -91,7 +91,7 @@ struct topology_policy_traits
       {
         //get_order (item) = 0;
         //TODO: get nodeId
-        get_order (item) = getWeight(0, (*item).key ());
+        get_order (item) = getWeight(7, (*item).key ());
 
         if (max_size_ != 0 && policy_container::size () >= max_size_)
           {

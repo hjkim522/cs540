@@ -7,7 +7,7 @@ namespace ndn {
 
 double getWeight(int nodeId, name::Component key) {
   //TODO:
-  printf("key %s\n", key.toUri().c_str());
+  printf("nodeid %d, key %s\n", nodeId, key.toUri().c_str());
   return 0;
 }
 

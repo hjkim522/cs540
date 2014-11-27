@@ -226,6 +226,7 @@ ContentStoreImpl<Policy>::Add (Ptr<const Data> data, int nodeId)
   NS_LOG_FUNCTION (this << data->GetName ());
 
   Ptr< entry > newEntry = Create< entry > (this, data);
+  newEntry->m_nodeId = nodeId;
   std::pair< typename super::iterator, bool > result = super::insert (data->GetName (), newEntry);
 
   if (result.first != super::end ())
@@ -233,7 +234,6 @@ ContentStoreImpl<Policy>::Add (Ptr<const Data> data, int nodeId)
       if (result.second)
         {
           newEntry->SetTrie (result.first);
-          newEntry->m_nodeId = nodeId;
 
           m_didAddEntry (newEntry);
           return true;
