@@ -7,11 +7,16 @@
 namespace ns3 {
 namespace ndn {
 
+/**
+ * Static variables
+ */
+
 std::map<std::string, int> s_sourceMap;
 int s_prefixLen = 7;
 
 #define NODE_MAX 100
-double s_bc[NODE_MAX][NODE_MAX]; //bc[nodeId][sourceId]
+double s_bc[NODE_MAX][NODE_MAX]; //s_bc[nodeId][sourceId]
+
 
 /**
  * Interface to ndnSIM
@@ -24,11 +29,6 @@ void InitSpt() {
   for(int i = 0; i < NODE_MAX; i++)
     for(int j = 0; j < NODE_MAX; j++)
       s_bc[i][j] = 2;
-
-  s_sourceMap.insert(std::map<std::string, int>::value_type("/prefix", 9));
-
-  int src = s_sourceMap.find("/prefix")->second;
-  printf("src %d\n", src);
 }
 
 void SetSource(std::string prefix, int sourceId) {
@@ -40,38 +40,20 @@ void SetBetweeness(int nodeId, int sourceId, double bc) {
   s_bc[nodeId][sourceId] = bc;
 }
 
+
 /**
- * Internal functions
+ * Internal function
  */
 
-void testWithEntry(Ptr<cs::Entry> entry) {
-  //nodeId
-  //entry->m_nodeId
+double getBetweenessWithEntry(Ptr<cs::Entry> entry) {
+  int nodeId = entry->m_nodeId;
+  std::string prefix = entry->GetName().toUri().substr(0, s_prefixLen);
+  int sourceId = s_sourceMap.find(prefix)->second;
 
-  printf("entry->GetName(); %s\n", entry->GetName ().toUri().c_str());
-  //printf("prefix %s\n", entry->GetName().getPrefix().toUri().c_str());
-}
-
-//XXX: not work... srcid need to be hard copied
-//XXX: modify pkt...
-double getBetweenessCentrality(int nodeId, int sourceId) {
-  printf("node %d, source %d\n", nodeId, sourceId);
+  printf("nodeId %d, sourceId %d, prefix %s, bc %f\n", nodeId, sourceId, prefix.c_str(), s_bc[nodeId][sourceId]);
   return s_bc[nodeId][sourceId];
 }
 
-double getWeight(int nodeId, name::Component key) {
-  //TODO:
-  //printf("nodeid %d, key %s\n", nodeId, key.toUri().c_str());
-  printf("nodeid %d, key %d\n", nodeId, key.toSeqNum ());
-
-  //printf("prefix : %s\n", key.)
-
-  // TODO: convert key to sourceId
-  // get betweeness centrality
-  int sourceId = 0;
-
-  return getBetweenessCentrality(nodeId, sourceId);
-}
 
 /**
  * SPT implementation

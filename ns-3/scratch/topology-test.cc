@@ -63,20 +63,19 @@ main (int argc, char *argv[])
   producerHelper.Install (nodes.Get (2)); // last node
 
   // Node config test
-  Ptr<Node> node = nodes.Get (1);
-  //Ptr<ndn::ContentStore> cs = node->GetObject<ndn::ContentStore> ();
-  //!fuck fw->m_nodeId was not necessary
-
+  //Ptr<Node> node = nodes.Get (1);
   //Ptr<ndn::ContentStore> cs = node->GetObject<ndn::ContentStore> ();
   //cs->m_nodeId = 3;
-
-  //check ndn-producer.cc
-
+  //!fw->m_nodeId was not necessary
 
   // we can use /prefix
   // we have to use fixed length prefix
   // we need /prefix to sourceId map
   ndn::InitSpt();
+  ndn::SetSource("/prefix", 2);
+  ndn::SetBetweeness(0,2,3);
+  ndn::SetBetweeness(1,2,4);
+  ndn::SetBetweeness(2,2,0);
 
   Simulator::Stop (Seconds (20.0));
 
