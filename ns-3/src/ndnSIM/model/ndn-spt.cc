@@ -73,6 +73,11 @@ double getWeight(int nodeId, name::Component key) {
   return getBetweenessCentrality(nodeId, sourceId);
 }
 
+/**
+ * SPT implementation
+ * XXX: not used currently
+ */
+
 namespace spt {
 
 #define MAX_SPT 10
