@@ -76,6 +76,29 @@ public:
     return item;
   }
 
+  inline std::pair< iterator, bool >
+  insert (const FullKey &key, typename PayloadTraits::insert_type payload, int nodeId)
+  {
+    std::pair<iterator, bool> item =
+      trie_.insert (key, payload);
+
+    if (item.second) // real insert
+      {
+        bool ok = policy_.insert (s_iterator_to (item.first), nodeId);
+        if (!ok)
+          {
+            item.first->erase (); // cannot insert
+            return std::make_pair (end (), false);
+          }
+      }
+    else
+      {
+        return std::make_pair (s_iterator_to (item.first), false);
+      }
+
+    return item;
+  }
+
   inline void
   erase (const FullKey &key)
   {

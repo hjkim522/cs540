@@ -228,6 +228,7 @@ ContentStoreImpl<Policy>::Add (Ptr<const Data> data, int nodeId)
   Ptr< entry > newEntry = Create< entry > (this, data);
   newEntry->m_nodeId = nodeId;
   std::pair< typename super::iterator, bool > result = super::insert (data->GetName (), newEntry);
+  //std::pair< typename super::iterator, bool > result = super::insert (data->GetName (), newEntry, nodeId);
 
   if (result.first != super::end ())
     {

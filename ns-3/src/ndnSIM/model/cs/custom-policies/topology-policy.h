@@ -104,6 +104,22 @@ struct topology_policy_traits
         return true;
       }
 
+      inline bool
+      insert (typename parent_trie::iterator item, int nodeId) //XXX: or directly use weight
+      {
+        get_order (item) = getWeight(nodeId, (*item).key ());
+
+        if (max_size_ != 0 && policy_container::size () >= max_size_)
+          {
+            // this erases the "least frequently used item" from cache
+            base_.erase (&(*policy_container::begin ()));
+          }
+
+        policy_container::insert (*item);
+
+        return true;
+      }
+
       inline void
       lookup (typename parent_trie::iterator item)
       {

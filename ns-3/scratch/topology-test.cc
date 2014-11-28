@@ -52,6 +52,14 @@ main (int argc, char *argv[])
   producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));
   producerHelper.Install (nodes.Get (2)); // last node
 
+  // Node config test
+  Ptr<Node> node = nodes.Get (1);
+  //Ptr<ndn::ContentStore> cs = node->GetObject<ndn::ContentStore> ();
+  //!fuck fw->m_nodeId was not necessary
+  Ptr<ndn::ContentStore> cs = node->GetObject<ndn::ContentStore> ();
+
+
+
   Simulator::Stop (Seconds (20.0));
 
   Simulator::Run ();
