@@ -3,7 +3,17 @@
 #include "ns3/point-to-point-module.h"
 #include "ns3/ndnSIM-module.h"
 
+namespace ns3 {
+namespace ndn {
+  void InitSpt();
+  void SetSource(std::string prefix, int sourceId);
+  void SetBetweeness(int nodeId, int sourceId, double bc);
+}
+}
+
 using namespace ns3;
+
+//void ndn::initSpt();
 
 int
 main (int argc, char *argv[])
@@ -56,9 +66,17 @@ main (int argc, char *argv[])
   Ptr<Node> node = nodes.Get (1);
   //Ptr<ndn::ContentStore> cs = node->GetObject<ndn::ContentStore> ();
   //!fuck fw->m_nodeId was not necessary
-  Ptr<ndn::ContentStore> cs = node->GetObject<ndn::ContentStore> ();
+
+  //Ptr<ndn::ContentStore> cs = node->GetObject<ndn::ContentStore> ();
+  //cs->m_nodeId = 3;
+
+  //check ndn-producer.cc
 
 
+  // we can use /prefix
+  // we have to use fixed length prefix
+  // we need /prefix to sourceId map
+  ndn::InitSpt();
 
   Simulator::Stop (Seconds (20.0));
 

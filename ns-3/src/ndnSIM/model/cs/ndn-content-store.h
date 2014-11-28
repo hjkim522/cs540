@@ -195,6 +195,9 @@ public:
   static inline Ptr<ContentStore>
   GetContentStore (Ptr<Object> node);
 
+public:
+  int m_nodeId;
+
 protected:
   TracedCallback<Ptr<const Interest>,
                  Ptr<const Data> > m_cacheHitsTrace; ///< @brief trace of cache hits

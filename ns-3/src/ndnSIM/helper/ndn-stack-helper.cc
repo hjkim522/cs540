@@ -238,6 +238,10 @@ StackHelper::Install (Ptr<Node> node) const
   // Aggregate L3Protocol on node
   node->AggregateObject (ndn);
 
+  // added for topology calc
+  Ptr<ContentStore> cs = node->GetObject<ContentStore> ();
+  cs->m_nodeId = node->GetId ();
+
   for (uint32_t index=0; index < node->GetNDevices (); index++)
     {
       Ptr<NetDevice> device = node->GetDevice (index);

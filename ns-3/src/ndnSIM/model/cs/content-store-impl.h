@@ -226,7 +226,7 @@ ContentStoreImpl<Policy>::Add (Ptr<const Data> data, int nodeId)
   NS_LOG_FUNCTION (this << data->GetName ());
 
   Ptr< entry > newEntry = Create< entry > (this, data);
-  newEntry->m_nodeId = nodeId;
+  newEntry->m_nodeId = this->m_nodeId; //XXX: now can remove nodeId..... tq
   std::pair< typename super::iterator, bool > result = super::insert (data->GetName (), newEntry);
   //std::pair< typename super::iterator, bool > result = super::insert (data->GetName (), newEntry, nodeId);
 

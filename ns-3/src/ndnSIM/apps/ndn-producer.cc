@@ -134,6 +134,9 @@ Producer::OnInterest (Ptr<const Interest> interest)
   data->SetFreshness (m_freshness);
   data->SetTimestamp (Simulator::Now());
 
+  // add sourceId for topology
+  data->m_sourceId = GetNode()->GetId();
+
   data->SetSignature (m_signature);
   if (m_keyLocator.size () > 0)
     {

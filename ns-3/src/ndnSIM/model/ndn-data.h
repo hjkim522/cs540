@@ -174,6 +174,9 @@ public:
   void
   Print (std::ostream &os) const;
   
+public:
+  int m_sourceId;
+
 private:
   // NO_ASSIGN
   Data &

@@ -55,6 +55,7 @@ Data::Data (const Data &other)
     {
       m_keyLocator = Create<Name> (*other.GetKeyLocator ());
     }
+  m_sourceId = other.m_sourceId;
 }
 
 void

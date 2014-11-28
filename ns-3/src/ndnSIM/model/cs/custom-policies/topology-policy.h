@@ -9,11 +9,15 @@
 #include <boost/intrusive/options.hpp>
 #include <boost/intrusive/set.hpp>
 #include "../../ndn-spt.h"
+#include <stdio.h>
 
 namespace ns3 {
 namespace ndn {
 
+class cs::Entry;
+void testWithEntry(Ptr<cs::Entry> entry);
 double getWeight(int nodeId, name::Component key);
+double getBetweenessCentrality(int nodeId, int sourceId);
 
 namespace ndnSIM {
 
@@ -89,9 +93,17 @@ struct topology_policy_traits
       inline bool
       insert (typename parent_trie::iterator item)
       {
+        //XXX: TEST
+        Ptr<cs::Entry> entry = (*item).payload ();
+        //printf("entry->m_nodeId %d\n", entry->m_nodeId);
+        //printf("entry data source %d\n", entry->GetData ()->m_sourceId);
+
+        testWithEntry(entry);
+
         //get_order (item) = 0;
         //TODO: get nodeId
-        get_order (item) = getWeight(7, (*item).key ());
+        get_order (item) = getWeight(entry->m_nodeId, (*item).key ());
+        //get_order (item) = getBetweenessCentrality(entry->m_nodeId, entry->GetData ()->m_sourceId);
 
         if (max_size_ != 0 && policy_container::size () >= max_size_)
           {
