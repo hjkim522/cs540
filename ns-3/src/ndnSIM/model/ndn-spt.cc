@@ -8,11 +8,15 @@ namespace ns3 {
 namespace ndn {
 
 std::map<std::string, int> s_sourceMap;
+int s_prefixLen = 7;
 
 #define NODE_MAX 100
 double s_bc[NODE_MAX][NODE_MAX]; //bc[nodeId][sourceId]
 
-// XXX: temporal impl
+/**
+ * Interface to ndnSIM
+ */
+
 void InitSpt() {
   printf("init spt\n");
 
@@ -28,6 +32,7 @@ void InitSpt() {
 }
 
 void SetSource(std::string prefix, int sourceId) {
+  s_prefixLen = prefix.length();
   s_sourceMap.insert(std::map<std::string, int>::value_type(prefix, sourceId));
 }
 
@@ -35,6 +40,9 @@ void SetBetweeness(int nodeId, int sourceId, double bc) {
   s_bc[nodeId][sourceId] = bc;
 }
 
+/**
+ * Internal functions
+ */
 
 void testWithEntry(Ptr<cs::Entry> entry) {
   //nodeId
