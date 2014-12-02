@@ -24,10 +24,13 @@
 #include "ns3/ndn-content-store.h"
 #include "ns3/ndn-cs-tracer.h"
 #include "ns3/type-id.h"
+#include "ns3/netanim-module.h"
 #include <iostream>
 #include <fstream>
 using namespace ns3;
 using namespace std;
+
+string f="bc-test.xml";
 /**
  * This scenario simulates a grid topology (using topology reader module)
  *
@@ -121,8 +124,7 @@ main (int argc, char *argv[])
   ndn::GlobalRoutingHelper::CalculateRoutes ();
 
   Simulator::Stop (Seconds (20.0));
-  ofstream file;
-  file.open("cstracer.txt",ofstream::out);
+  AnimationInterface anim(f);
   Simulator::Run ();
 //  ns3::ndn::CsTracer::Install(router1,cout);
   rtr1content->Print(cout);
@@ -131,7 +133,6 @@ main (int argc, char *argv[])
 cout<<"consumer1 content store"<<endl;
   src1->Print(cout);
   Simulator::Destroy ();
-file.close();
 
   return 0;
 }
