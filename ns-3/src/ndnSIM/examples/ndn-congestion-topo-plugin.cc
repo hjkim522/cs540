@@ -21,9 +21,13 @@
 #include "ns3/core-module.h"
 #include "ns3/network-module.h"
 #include "ns3/ndnSIM-module.h"
-
+#include "ns3/ndn-content-store.h"
+#include "ns3/ndn-cs-tracer.h"
+#include "ns3/type-id.h"
+#include <iostream>
+#include <fstream>
 using namespace ns3;
-
+using namespace std;
 /**
  * This scenario simulates a grid topology (using topology reader module)
  *
@@ -58,7 +62,7 @@ main (int argc, char *argv[])
   ndn::StackHelper ndnHelper;
   ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::BestRoute");
   ndnHelper.SetContentStore ("ns3::ndn::cs::Lru",
-                              "MaxSize", "10000");
+                              "MaxSize", "10");
   ndnHelper.InstallAll ();
 
   // Installing global routing interface on all nodes
@@ -71,9 +75,20 @@ main (int argc, char *argv[])
 
   Ptr<Node> producer1 = Names::Find<Node> ("Dst1");
   Ptr<Node> producer2 = Names::Find<Node> ("Dst2");
+  /*yongwon test*/
+  Ptr<Node> router1 = Names::Find<Node>("Rtr1");
+  Ptr<ns3::ndn::ContentStore> rtr1content=ns3::ndn::ContentStore::GetContentStore (router1);
+  Ptr<ns3::ndn::ContentStore> src1=ns3::ndn::ContentStore::GetContentStore (consumer1);
+
 
   ndn::AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
   consumerHelper.SetAttribute ("Frequency", StringValue ("100")); // 100 interests a second
+
+
+  NodeContainer nodeWithTracer;
+  nodeWithTracer.Add(producer1);
+  nodeWithTracer.Add(router1);
+  ns3::ndn::CsTracer::Install(nodeWithTracer,"tracefile.txt",Seconds(0.1));
 
   // on the first consumer node install a Consumer application
   // that will express interests in /dst1 namespace
@@ -87,6 +102,7 @@ main (int argc, char *argv[])
   
   ndn::AppHelper producerHelper ("ns3::ndn::Producer");
   producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));  
+  producerHelper.Install(router1);
 
   // Register /dst1 prefix with global routing controller and
   // install producer that will satisfy Interests in /dst1 namespace
@@ -104,9 +120,17 @@ main (int argc, char *argv[])
   ndn::GlobalRoutingHelper::CalculateRoutes ();
 
   Simulator::Stop (Seconds (20.0));
-
+  ofstream file;
+  file.open("cstracer.txt",ofstream::out);
   Simulator::Run ();
+//  ns3::ndn::CsTracer::Install(router1,cout);
+  rtr1content->Print(cout);
+ ns3::TypeId id=  rtr1content->GetTypeId();
+  cout<<"name = "<<id.GetName()<<endl;
+cout<<"consumer1 content store"<<endl;
+  src1->Print(cout);
   Simulator::Destroy ();
+file.close();
 
   return 0;
 }
