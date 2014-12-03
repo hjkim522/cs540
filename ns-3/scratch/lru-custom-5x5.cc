@@ -21,6 +21,7 @@
 #include "ns3/core-module.h"
 #include "ns3/network-module.h"
 #include "ns3/ndnSIM-module.h"
+#include "ns3/ndn-cs-tracer.h"
 
 using namespace ns3;
 
@@ -90,9 +91,10 @@ main (int argc, char *argv[])
 
   // Calculate and install FIBs
   ndn::GlobalRoutingHelper::CalculateRoutes ();
-
+  
+  ns3::ndn::CsTracer::Install(ns3::NodeContainer::GetGlobal(),"tracefile.txt",Seconds(1));
   Simulator::Stop (Seconds (20.0));
-
+  
   Simulator::Run ();
   Simulator::Destroy ();
 
