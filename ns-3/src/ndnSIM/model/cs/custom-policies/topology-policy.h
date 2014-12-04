@@ -16,8 +16,6 @@ namespace ndn {
 
 class cs::Entry;
 double getBetweenessWithEntry(Ptr<cs::Entry> entry);
-void notifyCached(Ptr<cs::Entry> entry);
-void notifyEvicted(Ptr<cs::Entry> entry);
 
 namespace ndnSIM {
 
@@ -114,14 +112,11 @@ struct topology_policy_traits
 
         if (max_size_ != 0 && policy_container::size () >= max_size_)
           {
-            //parent_trie::iterator tmp = policy_container::begin ();
-            //notifyEvicted((*begin).payload ());
             // this erases the "least frequently used item" from cache
             base_.erase (&(*policy_container::begin ()));
           }
 
         policy_container::insert (*item);
-        notifyCached ((*item).payload ());
 
         return true;
       }
@@ -137,7 +132,6 @@ struct topology_policy_traits
       inline void
       erase (typename parent_trie::iterator item)
       {
-        //notifyEvicted ((*item).payload ());
         policy_container::erase (policy_container::s_iterator_to (*item));
       }
 
