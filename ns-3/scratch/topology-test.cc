@@ -2,6 +2,11 @@
 #include "ns3/network-module.h"
 #include "ns3/point-to-point-module.h"
 #include "ns3/ndnSIM-module.h"
+#include "ns3/ndn-content-store.h"
+#include "ns3/ndn-cs-tracer.h"
+#include <iostream>
+
+
 
 namespace ns3 {
 namespace ndn {
@@ -12,7 +17,7 @@ namespace ndn {
 }
 
 using namespace ns3;
-
+using namespace std;
 //void ndn::initSpt();
 
 int
@@ -45,9 +50,11 @@ main (int argc, char *argv[])
   //ndnHelper.SetContentStore("ns3::ndn::cs::Lru", "MaxSize", "10000");
   ndnHelper.SetContentStore("ns3::ndn::cs::Topology", "MaxSize", "10000");
   ndnHelper.InstallAll ();
+//   Ptr<Node> node1=nodes.Get(1);
+//   Ptr<ns3::ndn::ContentStore> node1content=node1->GetObject<ns3::ndn::ContentStore>();//ns3::ndn::ContentStore::GetContentStore (node1);
+ndn::CsTracer::Install(nodes,"tracefile.txt",Seconds(1));
 
-  // Installing applications
-
+  // Installing applicationsi
   // Consumer
   ndn::AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
   // Consumer will request /prefix/0, /prefix/1, ...
@@ -80,6 +87,7 @@ main (int argc, char *argv[])
   Simulator::Stop (Seconds (20.0));
 
   Simulator::Run ();
+ // node1content->Print(cout);
   Simulator::Destroy ();
 
   return 0;
