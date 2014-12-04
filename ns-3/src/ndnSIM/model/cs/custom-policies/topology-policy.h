@@ -16,6 +16,7 @@ namespace ndn {
 
 class cs::Entry;
 double getBetweenessWithEntry(Ptr<cs::Entry> entry);
+void notifyCached(Ptr<cs::Entry> entry);
 
 namespace ndnSIM {
 
@@ -105,6 +106,7 @@ struct topology_policy_traits
         return true;
       }
 
+      /*
       inline bool
       insert (typename parent_trie::iterator item, int nodeId) //XXX: or directly use weight
       {
@@ -120,6 +122,7 @@ struct topology_policy_traits
 
         return true;
       }
+      */
 
       inline void
       lookup (typename parent_trie::iterator item)
