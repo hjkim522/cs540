@@ -18,7 +18,7 @@ std::string file = "gotosleep.xml";
 int
 main (int argc, char *argv[])
 {
-  int cacheSize = 5;
+  const char* cacheSize = "5";
   // Global topology setup
   //ndn::GlobalTopology *topology = ndn::GlobalTopology::getGlobalTopology();
 
