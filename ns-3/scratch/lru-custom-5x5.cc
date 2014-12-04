@@ -21,6 +21,7 @@
 #include "ns3/core-module.h"
 #include "ns3/network-module.h"
 #include "ns3/ndnSIM-module.h"
+#include "ns3/ndn-cs-tracer.h"
 
 using namespace ns3;
 
@@ -55,12 +56,12 @@ main (int argc, char *argv[])
   cmd.Parse (argc, argv);
 
   AnnotatedTopologyReader topologyReader ("", 25);
-  topologyReader.SetFileName ("src/ndnSIM/examples/topologies/topo-grid-3x3.txt");
+  topologyReader.SetFileName ("src/ndnSIM/examples/topologies/topo-grid-5x5.txt");
   topologyReader.Read ();
 
   // Install NDN stack on all nodes
   ndn::StackHelper ndnHelper;
-  ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::BestRoute");
+  //ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::BestRoute");
   ndnHelper.InstallAll ();
 
   // Installing global routing interface on all nodes
@@ -89,10 +90,11 @@ main (int argc, char *argv[])
   ndnGlobalRoutingHelper.AddOrigins (prefix, producer);
 
   // Calculate and install FIBs
-  ndn::GlobalRoutingHelper::CalculateRoutes ();
-
+  //ndn::GlobalRoutingHelper::CalculateRoutes ();
+  
+  ns3::ndn::CsTracer::Install(ns3::NodeContainer::GetGlobal(),"tracefile.txt",Seconds(1));
   Simulator::Stop (Seconds (20.0));
-
+  
   Simulator::Run ();
   Simulator::Destroy ();
 

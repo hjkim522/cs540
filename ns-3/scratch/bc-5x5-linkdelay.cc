@@ -3,6 +3,8 @@
 #include "ns3/point-to-point-module.h"
 #include "ns3/ndnSIM-module.h"
 #include "ns3/netanim-module.h"
+#include "ns3/ndn-cs-tracer.h"
+#include <iostream>
 namespace ns3 {
 namespace ndn {
   void InitSpt();
@@ -11,6 +13,7 @@ namespace ndn {
 }
 }
 using namespace ns3;
+using namespace std;
 std::string file = "gotosleep.xml";
 
 //void ndn::initSpt();
@@ -18,7 +21,7 @@ std::string file = "gotosleep.xml";
 int
 main (int argc, char *argv[])
 {
-  const char* cacheSize = "5";
+     const  char* cacheSize = "250";
   // Global topology setup
   //ndn::GlobalTopology *topology = ndn::GlobalTopology::getGlobalTopology();
 
@@ -34,7 +37,7 @@ main (int argc, char *argv[])
   AnnotatedTopologyReader topologyReader ("", 25);
   topologyReader.SetFileName ("src/ndnSIM/examples/topologies/topo-grid-5x5-linkdelay.txt");
   topologyReader.Read ();
-
+  
 
   // Creating nodes
 //  NodeContainer nodes;
@@ -48,9 +51,13 @@ main (int argc, char *argv[])
   // Install NDN stack on all nodes
   ndn::StackHelper ndnHelper;
   ndnHelper.SetDefaultRoutes (true);
-  //ndnHelper.SetContentStore("ns3::ndn::cs::Lru", "MaxSize", "10000");
+//  ndnHelper.SetContentStore("ns3::ndn::cs::Lru", "MaxSize", cacheSize);
   ndnHelper.SetContentStore("ns3::ndn::cs::Topology", "MaxSize", cacheSize);
   ndnHelper.InstallAll ();
+ string filename="expResult/BCresult";
+ filename+=string(cacheSize);
+ filename+=".ods";
+  ndn::CsTracer::InstallAll(filename.c_str(),Seconds(4));
 
   // Installing applications
 
