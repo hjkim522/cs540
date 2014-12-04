@@ -38,8 +38,8 @@ void InitSpt() {
 }
 
 void SetSource(std::string prefix, int sourceId) {
-  if (s_prefixLen != 0 && s_prefixLen == prefix.length()) {
-      printf("Length of prefix must be same!");
+  if (s_prefixLen != 0 && s_prefixLen != prefix.length()) {
+      printf("Length of prefix must be same! %d, %d\n", s_prefixLen, prefix.length());
       exit(0);
   }
   s_prefixLen = prefix.length();
