@@ -2,6 +2,7 @@
 #include "ns3/network-module.h"
 #include "ns3/point-to-point-module.h"
 #include "ns3/ndnSIM-module.h"
+#include "ns3/ndn-cs-tracer.h"
 
 namespace ns3 {
 namespace ndn {
@@ -42,6 +43,9 @@ main (int argc, char *argv[])
   //ndnHelper.SetContentStore("ns3::ndn::cs::Lru", "MaxSize", "10000");
   ndnHelper.SetContentStore("ns3::ndn::cs::Topology", "MaxSize", "5");
   ndnHelper.InstallAll ();
+
+
+  ns3::ndn::CsTracer::InstallAll("tracefile.txt",Seconds(20));
 
   // Installing applications
 
