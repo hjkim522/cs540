@@ -40,7 +40,7 @@ main (int argc, char *argv[])
   ndn::StackHelper ndnHelper;
   ndnHelper.SetDefaultRoutes (true);
   //ndnHelper.SetContentStore("ns3::ndn::cs::Lru", "MaxSize", "10000");
-  ndnHelper.SetContentStore("ns3::ndn::cs::Topology", "MaxSize", "10");
+  ndnHelper.SetContentStore("ns3::ndn::cs::Topology", "MaxSize", "20");
   ndnHelper.InstallAll ();
 
   // Installing applications
