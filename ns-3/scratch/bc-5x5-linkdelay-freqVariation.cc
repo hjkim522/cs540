@@ -17,14 +17,14 @@ namespace ndn {
 using namespace ns3;
 using namespace std;
 std::string file = "gotosleep.xml";
-string filename="expResult/BCresult1";
+string filename="expResult/BCresult";
 
 //void ndn::initSpt();
 
 int
 main (int argc, char *argv[])
 {
-  const char*  cacheSize = "200";
+  const char*  cacheSize = "5";
   const char* freq1 = "30";
   const char* freq2 = "50";
   const char* freq3 = "20";
