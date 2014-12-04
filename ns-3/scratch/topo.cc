@@ -45,7 +45,7 @@ main (int argc, char *argv[])
   ndnHelper.InstallAll ();
 
 
-  ns3::ndn::CsTracer::InstallAll("tracefile.txt",Seconds(20));
+  ns3::ndn::CsTracer::InstallAll("topolog.txt",Seconds(20));
 
   // Installing applications
 

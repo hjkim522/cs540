@@ -17,6 +17,7 @@ namespace ndn {
 class cs::Entry;
 double getBetweenessWithEntry(Ptr<cs::Entry> entry);
 void notifyCached(Ptr<cs::Entry> entry);
+void notifyEvicted(Ptr<cs::Entry> entry);
 
 namespace ndnSIM {
 
@@ -101,6 +102,7 @@ struct topology_policy_traits
             base_.erase (&(*policy_container::begin ()));
           }
 
+        notifyCached ((*item).payload ());
         policy_container::insert (*item);
 
         return true;
