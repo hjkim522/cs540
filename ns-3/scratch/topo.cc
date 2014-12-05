@@ -14,7 +14,10 @@ namespace ndn {
 
 using namespace ns3;
 
-//void ndn::initSpt();
+struct MetaInfo {
+  std::string name;
+  std::string prefix;
+};
 
 int
 main (int argc, char *argv[])
@@ -62,6 +65,36 @@ main (int argc, char *argv[])
   producerHelper.SetPrefix ("/prefix");
   producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));
   producerHelper.Install (nodes.Get (2)); // last node
+
+
+  // build consumer and producer
+  int consumerMetaLen = 2;
+  int producerMetaLen = 2;
+
+  MetaInfo consumerMeta[] = {
+    {"Node1", "/prefixA"},
+    {"Node2", "/prefixB"},
+  };
+
+  MetaInfo producerMeta[] = {
+    {"Node3", "/prefixA"},
+    {"Node4", "/prefixB"},
+  };
+
+  for (int i = 0; i < consumerMetaLen; i++) {
+    ndn::AppHelper consumerHelper ("ns3::ndn::ConsumerZipfMandelbrot");
+    consumerHelper.SetPrefix (consumerMeta[i].prefix);
+    consumerHelper.SetAttribute ("NumberOfContents", UintegerValue (200));
+    consumerHelper.Install(Names::Find<Node> (consumerMeta[i].name));
+  }
+
+  for (int i = 0; i < producerMetaLen; i++) {
+    ndn::AppHelper producerHelper ("ns3::ndn::Producer");
+    producerHelper.SetPrefix (producerMeta[i].prefix);
+    producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));
+    producerHelper.Install (Names::Find<Node> (producerMeta[i].name));
+  }
+
 
   // Node config test
   //Ptr<Node> node = nodes.Get (1);
