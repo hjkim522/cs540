@@ -2,7 +2,10 @@
 #include "ns3/network-module.h"
 #include "ns3/point-to-point-module.h"
 #include "ns3/ndnSIM-module.h"
+#include "ns3/netanim-module.h"
 #include "ns3/ndn-cs-tracer.h"
+#include <iostream>
+
 
 namespace ns3 {
 namespace ndn {
@@ -11,17 +14,31 @@ namespace ndn {
   void SetBetweeness(int nodeId, int sourceId, double bc);
 }
 }
-
 using namespace ns3;
+using namespace std;
+std::string file = "gotosleep.xml";
+string filename="expResult/ConSize200zipfBC-topo";
 
-struct MetaInfo {
-  std::string name;
-  std::string prefix;
-};
+
+#define MAXSEQ1 200
+#define MAXSEQ2 200
+#define MAXSEQ3 200
+#define MAXSEQ4 200
+#define MAXSEQ5 200
+#define MAXSEQ6 200
+
+//void ndn::initSpt();
 
 int
 main (int argc, char *argv[])
 {
+  const char*  cacheSize = "500";
+  const char* freq1 = "23";
+  const char* freq2 = "12";
+  const char* freq3 = "57";
+  const char* freq4 = "35";
+  const char* freq5 = "40";
+
   // setting default parameters for PointToPoint links and channels
   Config::SetDefault ("ns3::PointToPointNetDevice::DataRate", StringValue ("1Mbps"));
   Config::SetDefault ("ns3::PointToPointChannel::Delay", StringValue ("10ms"));
@@ -31,45 +48,28 @@ main (int argc, char *argv[])
   CommandLine cmd;
   cmd.Parse (argc, argv);
 
-  // Creating nodes
-  NodeContainer nodes;
-  nodes.Create (3);
-
-  // Connecting nodes using two links
-  PointToPointHelper p2p;
-  p2p.Install (nodes.Get (0), nodes.Get (1));
-  p2p.Install (nodes.Get (1), nodes.Get (2));
+  AnnotatedTopologyReader topologyReader ("", 25);
+  topologyReader.SetFileName ("src/ndnSIM/examples/topologies/topo-grid-5x5-linkdelay.txt");
+  topologyReader.Read ();
 
   // Install NDN stack on all nodes
   ndn::StackHelper ndnHelper;
   ndnHelper.SetDefaultRoutes (true);
-  //ndnHelper.SetContentStore("ns3::ndn::cs::Lru", "MaxSize", "10000");
-  ndnHelper.SetContentStore("ns3::ndn::cs::Topology", "MaxSize", "5");
+  //ndnHelper.SetContentStore("ns3::ndn::cs::Lru", "MaxSize", cacheSize);
+  ndnHelper.SetContentStore("ns3::ndn::cs::Topology", "MaxSize", cacheSize);
   ndnHelper.InstallAll ();
-
-
-  ns3::ndn::CsTracer::InstallAll("topolog.txt",Seconds(20));
+  filename+=string(cacheSize);
+  filename+=".ods";
+  ndn::CsTracer::InstallAll(filename.c_str(),Seconds(30.0));
 
   // Installing applications
+  std::string prefixA = "/prefixA";
+  std::string prefixB = "/prefixB";
+  std::string prefixC = "/prefixC";
+  std::string prefixD = "/prefixD";
 
-  // Consumer
-  ndn::AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
-  // Consumer will request /prefix/0, /prefix/1, ...
-  consumerHelper.SetPrefix ("/prefix");
-  consumerHelper.SetAttribute ("Frequency", StringValue ("10")); // 10 interests a second
-  consumerHelper.Install (nodes.Get (0)); // first node
-
-  // Producer
-  ndn::AppHelper producerHelper ("ns3::ndn::Producer");
-  // Producer will reply to all requests starting with /prefix
-  producerHelper.SetPrefix ("/prefix");
-  producerHelper.SetAttribute ("PayloadSize", StringValue("1024"));
-  producerHelper.Install (nodes.Get (2)); // last node
-
-
-  // build consumer and producer
   int consumerMetaLen = 2;
-  int producerMetaLen = 2;
+  int producerMetaLen = 5;
 
   MetaInfo consumerMeta[] = {
     {"Node1", "/prefixA"},
@@ -77,11 +77,11 @@ main (int argc, char *argv[])
   };
 
   MetaInfo producerMeta[] = {
-    {"Node3", "/prefixA"},
-    {"Node4", "/prefixB"},
-    {"Node4", "/prefixB"},
-    {"Node4", "/prefixB"},
-    {"Node4", "/prefixB"},
+    {"Node16", "/prefixA"},
+    {"Node18", "/prefixB"},
+    {"Node21", "/prefixC"},
+    {"Node27", "/prefixD"},
+    {"Node43", "/prefixE"},
   };
 
   for (int i = 0; i < consumerMetaLen; i++) {
@@ -99,25 +99,22 @@ main (int argc, char *argv[])
   }
 
 
-  // Node config test
-  //Ptr<Node> node = nodes.Get (1);
-  //Ptr<ndn::ContentStore> cs = node->GetObject<ndn::ContentStore> ();
-  //cs->m_nodeId = 3;
-  //!fw->m_nodeId was not necessary
-
-  // we can use /prefix
-  // we have to use fixed length prefix
-  // we need /prefix to sourceId map
+  // topology
   ndn::InitSpt();
-  ndn::SetSource("/prefix", 2);
-  ndn::SetBetweeness(0,2,3);
-  ndn::SetBetweeness(1,2,4);
-  ndn::SetBetweeness(2,2,0);
+  ndn::SetSource("/prefixA", 16);
+  ndn::SetSource("/prefixB", 18);
+  ndn::SetSource("/prefixC", 21);
+  ndn::SetSource("/prefixD", 27);
+  ndn::SetSource("/prefixD", 43);
 
-  Simulator::Stop (Seconds (20.0));
 
+
+  Simulator::Stop (Seconds (30.0));
+
+  AnimationInterface anim (file);
   Simulator::Run ();
   Simulator::Destroy ();
 
   return 0;
 }
+
