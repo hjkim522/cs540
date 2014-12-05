@@ -73,9 +73,13 @@ void notifyCached(Ptr<cs::Entry> entry) {
   int sourceId = s_sourceMap.find(prefix)->second;
 
   //TODO: update ci = ci - face
-  printf("notifyCached %d\n", nodeId);
-  printf("nodeId %d, sourceId %d, prefix %s, bc %f\n", nodeId, sourceId, prefix.c_str(), s_bc[nodeId][sourceId]);
+  //printf("notifyCached %d, %s\n", nodeId, entry->GetName().toUri().c_str());
+  //printf("nodeId %d, sourceId %d, prefix %s, bc %f\n", nodeId, sourceId, prefix.c_str(), s_bc[nodeId][sourceId]);
 
+  //Ptr<Node> node = Names::Find<Node> ("Node24"); //use node id
+  //Ptr<ndn::ContentStore> cs = node->GetObject<ndn::ContentStore> ();
+  //Ptr<ndn::ForwardingStrategy> fw = node->GetObject<ndn::ForwardingStrategy> ();
+  //Ptr<L3Protocol> l3 = node->GetObject<L3Protocol>();
 }
 
 void notifyEvicted(Ptr<cs::Entry> entry) {
@@ -83,8 +87,8 @@ void notifyEvicted(Ptr<cs::Entry> entry) {
   std::string prefix = entry->GetName().toUri().substr(0, s_prefixLen);
   int sourceId = s_sourceMap.find(prefix)->second;
 
-  printf("notifyEvicted %d\n", nodeId);
-  printf("nodeId %d, sourceId %d, prefix %s, bc %f\n", nodeId, sourceId, prefix.c_str(), s_bc[nodeId][sourceId]);
+  //printf("notifyEvicted %d, %s\n", nodeId, entry->GetName().toUri().c_str());
+  //printf("nodeId %d, sourceId %d, prefix %s, bc %f\n", nodeId, sourceId, prefix.c_str(), s_bc[nodeId][sourceId]);
 }
 
 /**

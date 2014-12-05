@@ -137,6 +137,7 @@ struct topology_policy_traits
       inline void
       erase (typename parent_trie::iterator item)
       {
+        notifyEvicted ((*item).payload ());
         policy_container::erase (policy_container::s_iterator_to (*item));
       }
 
