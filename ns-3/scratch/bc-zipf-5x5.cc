@@ -17,7 +17,7 @@ namespace ndn {
 using namespace ns3;
 using namespace std;
 std::string file = "gotosleep.xml";
-string filename="expResult/bestroute-lru-";
+string filename="expResult/bestroute-topo-";
 
 
 #define MAXSEQ1 200
@@ -71,11 +71,11 @@ main (int argc, char *argv[])
   // Install NDN stack on all nodes
   ndn::StackHelper ndnHelper;
   ndnHelper.SetDefaultRoutes (true);
-  ndnHelper.SetContentStore("ns3::ndn::cs::Lru", "MaxSize", cacheSize);
-  //ndnHelper.SetContentStore("ns3::ndn::cs::Topology", "MaxSize", cacheSize);
+  //ndnHelper.SetContentStore("ns3::ndn::cs::Lru", "MaxSize", cacheSize);
+  ndnHelper.SetContentStore("ns3::ndn::cs::Topology", "MaxSize", cacheSize);
 
-  //ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::Flooding");
-  ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::BestRoute");
+  ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::Flooding");
+  //ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::BestRoute");
 
   ndnHelper.InstallAll ();
   filename+=string(cacheSize);
