@@ -27,20 +27,18 @@ string filename="expResult/bestroute-lru-";
 #define MAXSEQ5 200
 #define MAXSEQ6 200
 
-//void ndn::initSpt();
 
 int
 main (int argc, char *argv[])
 {
-  const char*  cacheSize = "500"; //100 ~ 500 incr by 50
+  //const char* cacheSize = "500"; //100 ~ 500 incr by 50
   const char* freq1 = "23";
   const char* freq2 = "12";
   const char* freq3 = "57";
   const char* freq4 = "35";
   const char* freq5 = "40";
-
-  // Global topology setup
-  //ndn::GlobalTopology *topology = ndn::GlobalTopology::getGlobalTopology();
+  uint32_t nCacheSize = 100;
+  char cacheSize[8];
 
   // setting default parameters for PointToPoint links and channels
   Config::SetDefault ("ns3::PointToPointNetDevice::DataRate", StringValue ("1Mbps"));
@@ -49,7 +47,12 @@ main (int argc, char *argv[])
 
   // Read optional command-line parameters (e.g., enable visualizer with ./waf --run=<> --visualize
   CommandLine cmd;
+  cmd.AddValue("cacheSize", "Cache size : ", nCacheSize);
   cmd.Parse (argc, argv);
+
+  // parse cache size
+  printf("cache size %d\n", nCacheSize);
+  sprintf(cacheSize, "%d", nCacheSize);
 
   AnnotatedTopologyReader topologyReader ("", 25);
   topologyReader.SetFileName ("src/ndnSIM/examples/topologies/topo-grid-5x5-linkdelay.txt");
