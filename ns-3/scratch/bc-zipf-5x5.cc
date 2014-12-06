@@ -17,7 +17,7 @@ namespace ndn {
 using namespace ns3;
 using namespace std;
 std::string file = "gotosleep.xml";
-string filename="expResult/ConSize200zipmBC-5x5";
+string filename="expResult/bestroute-lru-";
 
 
 #define MAXSEQ1 200
@@ -32,7 +32,7 @@ string filename="expResult/ConSize200zipmBC-5x5";
 int
 main (int argc, char *argv[])
 {
-  const char*  cacheSize = "500";
+  const char*  cacheSize = "500"; //100 ~ 500 incr by 50
   const char* freq1 = "23";
   const char* freq2 = "12";
   const char* freq3 = "57";
@@ -68,12 +68,24 @@ main (int argc, char *argv[])
   // Install NDN stack on all nodes
   ndn::StackHelper ndnHelper;
   ndnHelper.SetDefaultRoutes (true);
- // ndnHelper.SetContentStore("ns3::ndn::cs::Lru", "MaxSize", cacheSize);
-  ndnHelper.SetContentStore("ns3::ndn::cs::Topology", "MaxSize", cacheSize);
+  ndnHelper.SetContentStore("ns3::ndn::cs::Lru", "MaxSize", cacheSize);
+  //ndnHelper.SetContentStore("ns3::ndn::cs::Topology", "MaxSize", cacheSize);
+
+  //ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::Flooding");
+  ndnHelper.SetForwardingStrategy ("ns3::ndn::fw::BestRoute");
+
   ndnHelper.InstallAll ();
- filename+=string(cacheSize);
- filename+=".ods";
+  filename+=string(cacheSize);
+  filename+=".ods";
   ndn::CsTracer::InstallAll(filename.c_str(),Seconds(30.0));
+
+  // enable global router
+  ndn::GlobalRoutingHelper ndnGlobalRoutingHelper;
+  ndnGlobalRoutingHelper.InstallAll ();
+  ndnGlobalRoutingHelper.AddOrigins ("/prefixA", Names::Find<Node> ("Node16"));
+  ndnGlobalRoutingHelper.AddOrigins ("/prefixB", Names::Find<Node> ("Node2"));
+  ndnGlobalRoutingHelper.AddOrigins ("/prefixC", Names::Find<Node> ("Node13"));
+  ndnGlobalRoutingHelper.AddOrigins ("/prefixD", Names::Find<Node> ("Node24"));
 
   // Installing applications
 
@@ -532,6 +544,8 @@ ndn::SetBetweeness(21,24,0.25);
 ndn::SetBetweeness(22,24,0.29166666);
 ndn::SetBetweeness(23,24,0.5);
 
+
+  ndn::GlobalRoutingHelper::CalculateRoutes ();
 
   Simulator::Stop (Seconds (30.0));
 
